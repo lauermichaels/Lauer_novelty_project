@@ -1,6 +1,6 @@
 # Data setup
 
-setwd("~/Library/CloudStorage/OneDrive-Personal/Novelty Paper")
+setwd("~")
 
 library(arrow) # Efficiently read and process parquet and other large files
 library(tidyverse) # Data manipulation and ggplots
@@ -12,9 +12,8 @@ library(duckplyr) # leverage DuckDB
 
 ########################################################################################
 
-setwd("~/Dropbox/My Mac (new-host.home)/Downloads")
-
 # Data from the NIH Office of Portfolio Analysis, downloaded on 2/27/26
+# Data at https://doi.org/10.35092/yhjc.c.4586573. 
 
 opa_total <- read_csv_duckdb("icite_metadata.csv",
                              options = list(ignore_errors = TRUE)) %>%
@@ -28,8 +27,9 @@ opa_total <- read_csv_duckdb("icite_metadata.csv",
 
   opa_total %>% compute_parquet("opa_.parquet")
   
-# Merge with NIH PMIDs -- I generated a list of NIH PMIDs from ExPORTER using R script NIH PMIDs 2 27 26.R (see code below)
-  # This eliminates PMIDs that are linked to other sponsors like AHRQ, FDA, CDC, and VA
+# Merge with NIH PMIDs -- I generated a list of NIH PMIDs from ExPORTER using R script NIH PMIDs 2 27 26.R
+# NIH ExPORTER is at https://reporter.nih.gov/exporter.
+  # I eliminated PMIDs that are linked to other sponsors like AHRQ, FDA, CDC, and VA
   # It includes NIH intramural and extramural
   # It includes all NIH PMIDs, including papers that OPA does not consider to be research articles
   
@@ -60,6 +60,7 @@ opa_use2%>%
 
 # Read Sciscinet V2 data, limit to articles with nonmissing Atyp_10pct_Z
 # Change DOI to lower case to enable merger with Sciscinet V2
+# Sciscinet V2 data is at https://huggingface.co/datasets/Northwestern-CSSI/sciscinet-v2/tree/main. 
 
 sciscinet_v2_novelty_1980_2024 <- open_dataset('sciscinet_papers.parquet') %>%
   filter(!is.na(doi)) %>% filter(doctype=="article") %>% filter(!is.na(Atyp_10pct_Z)) %>%
@@ -102,9 +103,7 @@ opa_sciscinet_use %>%
 # Read in original data, which is a merger of OPA, ExPORTER, and Sciscinet V2
 # Only includes papers which are in the triangle of biomedicine
 
-setwd("~/Library/CloudStorage/OneDrive-Personal/Sciscinet v2")
-
-# Set up key factor
+# Set up factors
 
 novelty_order  <- c("Platypus", "Avant-garde", "Accepted Wisdom", "Darwin's Tower","Missing")
 science_order  <- c("Fundamental", "Mixed", "Human-focused")
