@@ -5,7 +5,7 @@ library(tidyverse) # data manipulation and ggplots
 library(scales) # For percent values on ggplots
 library(patchwork) # multi-panel figures
 
-setwd("~/Library/CloudStorage/OneDrive-Personal/Sciscinet v2")
+setwd("~")
 
 df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2001_2022_3_1_26.parquet")
 
@@ -29,7 +29,8 @@ df_plot <- df %>%
     )
   )
 
-# 1. Construct signed log2-magnitude coordinate
+# Construct signed log2-magnitude coordinate
+
 epsilon <- 1e-6  # to avoid log2(0)
 df_plot <- df_plot %>%
   mutate(
@@ -40,7 +41,8 @@ df_plot <- df_plot %>%
     signed_log2 = log2_mag * sign_val
   )
 
-# 2. Compute ECDF in this transformed coordinate (one curve per year_group)
+# Compute ECDF in this transformed coordinate (one curve per year_group)
+
 ecdf_df <- df_plot %>%
   filter(!is.na(signed_log2), !is.na(year_group)) %>%
   arrange(year_group, signed_log2) %>%
@@ -50,7 +52,8 @@ ecdf_df <- df_plot %>%
   ) %>%
   ungroup()
 
-# 3. Define tick positions (in exponent units) and labels
+# Define tick positions (in exponent units) and labels
+
 neg_pows <- 8:1          # 8,7, 6,...,1
 pos_pows <- 1:12         # 1..12
 
@@ -62,7 +65,8 @@ xticks_labels <- c(
   paste0("2^", pos_pows)
 )
 
-# 4. Plot with ggplot
+# Plot
+
 plot_ecdf_novelty_nih<-ggplot(ecdf_df, aes(x = signed_log2, y = ecdf_y, color = year_group)) +
   geom_step(direction = "hv") +
   scale_x_continuous(
@@ -109,7 +113,8 @@ df_plot <- df %>%
     )
   )
 
-# 1. Construct signed log2-magnitude coordinate
+# Construct signed log2-magnitude coordinate
+
 epsilon <- 1e-6  # to avoid log2(0)
 df_plot <- df_plot %>%
   mutate(
@@ -120,7 +125,8 @@ df_plot <- df_plot %>%
     signed_log2 = log2_mag * sign_val
   )
 
-# 2. Compute ECDF in this transformed coordinate (one curve per year_group)
+# Compute ECDF in this transformed coordinate (one curve per year_group)
+
 ecdf_df <- df_plot %>%
   filter(!is.na(signed_log2), !is.na(year_group)) %>%
   arrange(year_group, signed_log2) %>%
@@ -130,7 +136,8 @@ ecdf_df <- df_plot %>%
   ) %>%
   ungroup()
 
-# 3. Define tick positions (in exponent units) and labels
+# Define tick positions (in exponent units) and labels
+
 neg_pows <- 8:1          # 8,7,...,1
 pos_pows <- 1:12         # 1..12
 
@@ -142,7 +149,8 @@ xticks_labels <- c(
   paste0("2^", pos_pows)
 )
 
-# 4. Plot with ggplot
+# Plot
+
 plot_ecdf_novelty_non_nih<-ggplot(ecdf_df, aes(x = signed_log2, y = ecdf_y, color = year_group)) +
   geom_step(direction = "hv") +
   scale_x_continuous(
@@ -191,7 +199,8 @@ df_plot <- df %>%
     )
   )
 
-# 1. Construct signed log2-magnitude coordinate
+# Construct signed log2-magnitude coordinate
+
 epsilon <- 1e-6  # to avoid log2(0)
 df_plot <- df_plot %>%
   mutate(
@@ -202,7 +211,8 @@ df_plot <- df_plot %>%
     signed_log2 = log2_mag * sign_val
   )
 
-# 2. Compute ECDF in this transformed coordinate (one curve per year_group)
+# Compute ECDF in this transformed coordinate (one curve per year_group)
+
 ecdf_df <- df_plot %>%
   filter(!is.na(signed_log2), !is.na(year_group)) %>%
   arrange(year_group, signed_log2) %>%
@@ -212,7 +222,8 @@ ecdf_df <- df_plot %>%
   ) %>%
   ungroup()
 
-# 3. Define tick positions (in exponent units) and labels
+# Define tick positions (in exponent units) and labels
+
 neg_pows <- 8:1          # 8,7, 6,...,1
 pos_pows <- 1:12         # 1..12
 
@@ -224,7 +235,8 @@ xticks_labels <- c(
   paste0("2^", pos_pows)
 )
 
-# 4. Plot with ggplot
+# Plot
+
 plot_ecdf_conventionality_nih<-ggplot(ecdf_df, aes(x = signed_log2, y = ecdf_y, color = year_group)) +
   geom_step(direction = "hv") +
   scale_x_continuous(
@@ -271,7 +283,8 @@ df_plot <- df %>%
     )
   )
 
-# 1. Construct signed log2-magnitude coordinate
+# Construct signed log2-magnitude coordinate
+
 epsilon <- 1e-6  # to avoid log2(0)
 df_plot <- df_plot %>%
   mutate(
@@ -282,7 +295,8 @@ df_plot <- df_plot %>%
     signed_log2 = log2_mag * sign_val
   )
 
-# 2. Compute ECDF in this transformed coordinate (one curve per year_group)
+# Compute ECDF in this transformed coordinate (one curve per year_group)
+
 ecdf_df <- df_plot %>%
   filter(!is.na(signed_log2), !is.na(year_group)) %>%
   arrange(year_group, signed_log2) %>%
@@ -292,7 +306,8 @@ ecdf_df <- df_plot %>%
   ) %>%
   ungroup()
 
-# 3. Define tick positions (in exponent units) and labels
+# Define tick positions (in exponent units) and labels
+
 neg_pows <- 8:1          # 8,7,...,1
 pos_pows <- 1:12         # 1..12
 
@@ -304,7 +319,8 @@ xticks_labels <- c(
   paste0("2^", pos_pows)
 )
 
-# 4. Plot with ggplot
+# Plot
+
 plot_ecdf_conventionality_non_nih<-ggplot(ecdf_df, aes(x = signed_log2, y = ecdf_y, color = year_group)) +
   geom_step(direction = "hv") +
   scale_x_continuous(
@@ -340,7 +356,5 @@ plot_ecdf_conventionality_non_nih<-ggplot(ecdf_df, aes(x = signed_log2, y = ecdf
 
 plot_ecdf_novelty_nih + plot_ecdf_novelty_non_nih +
   plot_ecdf_conventionality_nih + plot_ecdf_conventionality_non_nih + plot_layout(ncol=2)
-
-setwd("~/Library/CloudStorage/OneDrive-Personal/Novelty Paper")
 
 ggsave("Supplementary Figure 1.jpg", width = 10, height = 7.5, units = c("in"), dpi=600)
