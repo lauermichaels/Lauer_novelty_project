@@ -5,7 +5,7 @@ library(tidyverse) # data manipulation and ggplots
 library(gtsummary) # summary tables
 library(gt) # summary tables -- export
 
-setwd("~/Library/CloudStorage/OneDrive-Personal/Sciscinet v2")
+setwd("~")
 
 df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2001_2022_3_1_26.parquet")
 
@@ -115,8 +115,6 @@ tbl_2 <-
 tbl_gt_Table_2 <- as_gt(tbl_2) %>%
   gt::tab_options(table.font.names = "Times New Roman")
 tbl_gt_Table_2
-
-setwd("~/Library/CloudStorage/OneDrive-Personal/Novelty Paper")
 
 # Save table
 gtsave(tbl_gt_Table_2, "Table 2 3 1 26.html")
