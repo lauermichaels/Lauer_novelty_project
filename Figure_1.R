@@ -5,7 +5,7 @@ library(tidyverse) # data manipulation and ggplots
 library(scales) # For percent values on ggplots
 library(patchwork) # multi-panel figures
 
-setwd("~/Library/CloudStorage/OneDrive-Personal/Sciscinet v2")
+setwd("~")
 
 df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2001_2022_3_1_26.parquet")
 
@@ -23,7 +23,8 @@ df_plot <- df %>%
   filter(!is.na(Atyp_10pct_Z)) %>%
   mutate(Science_Type = factor(Science_Type, levels = c("Fundamental","Mixed","Human-focused")))
 
-# 1. Construct signed log2-magnitude coordinate
+# Construct signed log2-magnitude coordinate
+
 epsilon <- 1e-6  # to avoid log2(0)
 df_plot <- df_plot %>%
   mutate(
@@ -34,7 +35,8 @@ df_plot <- df_plot %>%
     signed_log2 = log2_mag * sign_val
   )
 
-# 2. Compute ECDF in this transformed coordinate (one curve per year_group)
+# Compute ECDF in this transformed coordinate (one curve Science_Type)
+
 ecdf_df <- df_plot %>%
   filter(!is.na(signed_log2), !is.na(Science_Type)) %>%
   arrange(Science_Type, signed_log2) %>%
@@ -44,7 +46,8 @@ ecdf_df <- df_plot %>%
   ) %>%
   ungroup()
 
-# 3. Define tick positions (in exponent units) and labels
+# Define tick positions (in exponent units) and labels
+
 neg_pows <- 8:1          # 8,7, 6,...,1
 pos_pows <- 1:12         # 1..12
 
@@ -56,7 +59,8 @@ xticks_labels <- c(
   paste0("2^", pos_pows)
 )
 
-# 4. Plot with ggplot
+# Plot with ggplot
+
 plot_ecdf_novelty_science_type<-ggplot(ecdf_df, aes(x = signed_log2, y = ecdf_y, color = Science_Type)) +
   geom_step(direction = "hv") +
   scale_x_continuous(
@@ -95,7 +99,8 @@ df_plot <- df %>%
   filter(!is.na(Atyp_10pct_Z)) %>%
   mutate(Science_Type = factor(Science_Type, levels = c("Fundamental","Mixed","Human-focused")))
 
-# 1. Construct signed log2-magnitude coordinate
+# Construct signed log2-magnitude coordinate
+
 epsilon <- 1e-6  # to avoid log2(0)
 df_plot <- df_plot %>%
   mutate(
@@ -106,7 +111,8 @@ df_plot <- df_plot %>%
     signed_log2 = log2_mag * sign_val
   )
 
-# 2. Compute ECDF in this transformed coordinate (one curve per year_group)
+# Compute ECDF in this transformed coordinate (one curve per Science_Type)
+
 ecdf_df <- df_plot %>%
   filter(!is.na(signed_log2), !is.na(Science_Type)) %>%
   arrange(Science_Type, signed_log2) %>%
@@ -116,7 +122,8 @@ ecdf_df <- df_plot %>%
   ) %>%
   ungroup()
 
-# 3. Define tick positions (in exponent units) and labels
+# Define tick positions (in exponent units) and labels
+
 neg_pows <- 8:1          # 8,7, 6,...,1
 pos_pows <- 1:12         # 1..12
 
@@ -128,7 +135,8 @@ xticks_labels <- c(
   paste0("2^", pos_pows)
 )
 
-# 4. Plot with ggplot
+# Plot with ggplot
+
 plot_ecdf_conventionality_science_type<-ggplot(ecdf_df, aes(x = signed_log2, y = ecdf_y, color = Science_Type)) +
   geom_step(direction = "hv") +
   scale_x_continuous(
@@ -161,7 +169,7 @@ plot_ecdf_conventionality_science_type<-ggplot(ecdf_df, aes(x = signed_log2, y =
   annotate("text", x = -5, y = 0.85, label = "Novel\nCombinations", size = 3) +
   annotate("text", x = 8, y = 0.15, label = "Conventional\nCombinations", size = 3)
 
-################# Compare NIH to non-NIH
+######### Compare NIH to non-NIH
 
 # Novelty Plot
 
@@ -175,7 +183,8 @@ df_plot <- df %>%
     )
   )
 
-# 1. Construct signed log2-magnitude coordinate
+# Construct signed log2-magnitude coordinate
+
 epsilon <- 1e-6  # to avoid log2(0)
 df_plot <- df_plot %>%
   mutate(
@@ -186,7 +195,8 @@ df_plot <- df_plot %>%
     signed_log2 = log2_mag * sign_val
   )
 
-# 2. Compute ECDF in this transformed coordinate (one curve per year_group)
+# Compute ECDF in this transformed coordinate (one curve per funding source)
+
 ecdf_df <- df_plot %>%
   filter(!is.na(signed_log2), !is.na(Funding)) %>%
   arrange(Funding, signed_log2) %>%
@@ -196,7 +206,8 @@ ecdf_df <- df_plot %>%
   ) %>%
   ungroup()
 
-# 3. Define tick positions (in exponent units) and labels
+# Define tick positions (in exponent units) and labels
+
 neg_pows <- 8:1          # 8,7, 6,...,1
 pos_pows <- 1:12         # 1..12
 
@@ -208,7 +219,8 @@ xticks_labels <- c(
   paste0("2^", pos_pows)
 )
 
-# 4. Plot with ggplot
+# Plot with ggplot
+
 plot_ecdf_novelty_funding<-ggplot(ecdf_df, aes(x = signed_log2, y = ecdf_y, color = Funding)) +
   geom_step(direction = "hv") +
   scale_x_continuous(
@@ -253,7 +265,8 @@ df_plot <- df %>%
     )
   )
 
-# 1. Construct signed log2-magnitude coordinate
+# Construct signed log2-magnitude coordinate
+
 epsilon <- 1e-6  # to avoid log2(0)
 df_plot <- df_plot %>%
   mutate(
@@ -264,7 +277,8 @@ df_plot <- df_plot %>%
     signed_log2 = log2_mag * sign_val
   )
 
-# 2. Compute ECDF in this transformed coordinate (one curve per year_group)
+# Compute ECDF in this transformed coordinate (one curve per funding source)
+
 ecdf_df <- df_plot %>%
   filter(!is.na(signed_log2), !is.na(Funding)) %>%
   arrange(Funding, signed_log2) %>%
@@ -274,7 +288,8 @@ ecdf_df <- df_plot %>%
   ) %>%
   ungroup()
 
-# 3. Define tick positions (in exponent units) and labels
+# Define tick positions (in exponent units) and labels
+
 neg_pows <- 8:1          # 8,7, 6,...,1
 pos_pows <- 1:12         # 1..12
 
@@ -286,7 +301,8 @@ xticks_labels <- c(
   paste0("2^", pos_pows)
 )
 
-# 4. Plot with ggplot
+# Plot with ggplot
+
 plot_ecdf_conventionality_funding<-ggplot(ecdf_df, aes(x = signed_log2, y = ecdf_y, color = Funding)) +
   geom_step(direction = "hv") +
   scale_x_continuous(
@@ -321,7 +337,5 @@ plot_ecdf_conventionality_funding<-ggplot(ecdf_df, aes(x = signed_log2, y = ecdf
 
 plot_ecdf_novelty_science_type + plot_ecdf_conventionality_science_type + 
   plot_ecdf_novelty_funding + plot_ecdf_conventionality_funding  + plot_layout(ncol=2)
-
-setwd("~/Library/CloudStorage/OneDrive-Personal/Novelty Paper")
 
 ggsave("Figure 1 3 1 26.jpg", width = 10, height = 7.5, units = c("in"), dpi=600)
