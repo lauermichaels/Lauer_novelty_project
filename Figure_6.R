@@ -58,7 +58,5 @@ ggplot(
     strip.text = element_text(face = "bold")
   )
 
-setwd("~/Library/CloudStorage/OneDrive-Personal/Novelty Paper")
-
 ggsave("Figure 6.jpg", width = 6.665, height = 3.75, units = c("in"), dpi=600)
 
