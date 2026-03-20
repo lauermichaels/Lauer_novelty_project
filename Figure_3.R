@@ -5,7 +5,7 @@ library(tidyverse) # data manipulation and ggplots
 library(scales) # For percent values on ggplots
 library(patchwork) # multi-panel figures
 
-setwd("~/Library/CloudStorage/OneDrive-Personal/Sciscinet v2")
+setwd("~")
 
 df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2001_2022_3_1_26.parquet")
 
@@ -17,7 +17,8 @@ df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2001_2022_3_1_26.pa
 
 # Plot of percent Platypus papers by Science Type and Funding
 
-# 1. Keep only rows with non-missing Novelty_Type, Science_Type, NIH_funding
+# Keep only rows with non-missing Novelty_Type, Science_Type, NIH_funding
+
 df_plot <- df_opa_sciscinet_2001_2022 %>%
   filter(
     !is.na(Atyp_10pct_Z),
@@ -29,7 +30,8 @@ df_plot <- df_opa_sciscinet_2001_2022 %>%
     NIH_funding_label = ifelse(NIH_funding == 1, "NIH-funded", "Not NIH-funded")
   )
 
-# 2. Compute proportion Darwin's Tower by Science_Type and NIH_funding
+# Compute proportion by Science_Type and NIH_funding
+
 df_summary <- df_plot %>%
   group_by(Science_Type, NIH_funding_label) %>%
   summarise(
@@ -37,7 +39,8 @@ df_summary <- df_plot %>%
     .groups = "drop"
   )
 
-# 3. Plot: y-axis in percent
+# Plot
+
 plot_platypus<-ggplot(df_summary,
                       aes(x = Science_Type,
                           y = prop_platypus,
@@ -61,7 +64,8 @@ plot_platypus<-ggplot(df_summary,
 
 # Plot of percent Avant-garde papers by Science Type and Funding
 
-# 1. Keep only rows with non-missing Novelty_Type, Science_Type, NIH_funding
+# Keep only rows with non-missing Novelty_Type, Science_Type, NIH_funding
+
 df_plot <- df_opa_sciscinet_2001_2022 %>%
   filter(
     !is.na(Atyp_10pct_Z),
@@ -73,7 +77,8 @@ df_plot <- df_opa_sciscinet_2001_2022 %>%
     NIH_funding_label = ifelse(NIH_funding == 1, "NIH-funded", "Not NIH-funded")
   )
 
-# 2. Compute proportion Darwin's Tower by Science_Type and NIH_funding
+# Compute proportion by Science_Type and NIH_funding
+
 df_summary <- df_plot %>%
   group_by(Science_Type, NIH_funding_label) %>%
   summarise(
@@ -81,7 +86,8 @@ df_summary <- df_plot %>%
     .groups = "drop"
   )
 
-# 3. Plot: y-axis in percent
+# Plot
+
 plot_avant<-ggplot(df_summary,
                    aes(x = Science_Type,
                        y = prop_avant,
@@ -104,7 +110,8 @@ plot_avant<-ggplot(df_summary,
 
 # Plot of percent Accepted Wisdom papers by Science Type and Funding
 
-# 1. Keep only rows with non-missing Novelty_Type, Science_Type, NIH_funding
+# Keep only rows with non-missing Novelty_Type, Science_Type, NIH_funding
+
 df_plot <- df_opa_sciscinet_2001_2022 %>%
   filter(
     !is.na(Atyp_10pct_Z),
@@ -116,7 +123,8 @@ df_plot <- df_opa_sciscinet_2001_2022 %>%
     NIH_funding_label = ifelse(NIH_funding == 1, "NIH-funded", "Not NIH-funded")
   )
 
-# 2. Compute proportion Darwin's Tower by Science_Type and NIH_funding
+# Compute proportion by Science_Type and NIH_funding
+
 df_summary <- df_plot %>%
   group_by(Science_Type, NIH_funding_label) %>%
   summarise(
@@ -124,7 +132,8 @@ df_summary <- df_plot %>%
     .groups = "drop"
   )
 
-# 3. Plot: y-axis in percent
+# Plot
+
 plot_aw<-ggplot(df_summary,
                 aes(x = Science_Type,
                     y = prop_aw,
@@ -149,7 +158,8 @@ plot_aw<-ggplot(df_summary,
 
 # Plot of percent Darwin's Tower papers by Science Type and Funding
 
-# 1. Keep only rows with non-missing Novelty_Type, Science_Type, NIH_funding
+# Keep only rows with non-missing Novelty_Type, Science_Type, NIH_funding
+
 df_plot <- df_opa_sciscinet_2001_2022 %>%
   filter(
     !is.na(Novelty_Type),
@@ -161,7 +171,8 @@ df_plot <- df_opa_sciscinet_2001_2022 %>%
     NIH_funding_label = ifelse(NIH_funding == 1, "NIH-funded", "Not NIH-funded")
   )
 
-# 2. Compute proportion Darwin's Tower by Science_Type and NIH_funding
+# Compute proportion by Science_Type and NIH_funding
+
 df_summary <- df_plot %>%
   group_by(Science_Type, NIH_funding_label) %>%
   summarise(
@@ -169,7 +180,8 @@ df_summary <- df_plot %>%
     .groups = "drop"
   )
 
-# 3. Plot: y-axis in percent
+# Plot
+
 plot_dt<-ggplot(df_summary,
                 aes(x = Science_Type,
                     y = prop_darwin,
@@ -191,7 +203,5 @@ plot_dt<-ggplot(df_summary,
   )
 
 plot_platypus + plot_avant + plot_aw + plot_dt + plot_layout(ncol=2)
-
-setwd("~/Library/CloudStorage/OneDrive-Personal/Novelty Paper")
 
 ggsave("Figure 3.jpg", width = 6.665, height = 7.5, units = c("in"), dpi=600)
