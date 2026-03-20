@@ -6,6 +6,8 @@ library(splines) # splines
 library(scales) # percent axes
 library(nnet)   # for multinomial models
 
+setwd("~")
+
 df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2001_2022_3_1_26.parquet")
 
 # Our working data frame will be a 5% random sample
