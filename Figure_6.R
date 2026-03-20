@@ -3,6 +3,8 @@
 library(arrow) # read parquet files
 library(tidyverse) # data manipulation and ggplots
 
+setwd("~")
+
 df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2001_2022_3_1_26.parquet")
 
 df <- df_opa_sciscinet_2001_2022 
