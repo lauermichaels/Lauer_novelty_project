@@ -7,7 +7,7 @@ library(splines) # splines
 library(sandwich) # robust standard errors
 library(lmtest) # testing robust standard errors
 
-setwd("~/Library/CloudStorage/OneDrive-Personal/Sciscinet v2")
+setwd("~")
 
 df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2001_2022_3_1_26.parquet")
 
@@ -17,9 +17,8 @@ set.seed(123)
 df <- df_opa_sciscinet_2001_2022 %>%
   sample_frac(0.05)
 
-#----------------------------------------------------------
-# 0. Create journal_volume, year_c, and missingness flag
-#----------------------------------------------------------
+
+# Create journal_volume, year_c, and missingness flag
 
 df <- df %>%
   # journal_volume = total number of papers in each journal
@@ -33,10 +32,8 @@ df <- df %>%
     novelty_obs = ifelse(is.na(Atyp_10pct_Z), 0, 1)
   )
 
-#----------------------------------------------------------
-# 1. Fit missingness model for Novelty_Type
+# Fit missingness model for Novelty_Type
 #    P(Novelty_Type observed | covariates)
-#----------------------------------------------------------
 
 fit_miss_lpm <- lm(
   novelty_obs ~
@@ -51,11 +48,13 @@ fit_miss_lpm <- lm(
 summary(fit_miss_lpm)
 
 # Predicted probability that Novelty_Type is observed
+
 df$pi_obs <- pmin(pmax(predict(fit_miss_lpm, type = "response"), 0.01), 0.99)
 
 # Truncate to [0.01, 0.99] to avoid extreme weights
 
 # Stabilized inverse probability weights
+
 p_overall_obs <- mean(df$novelty_obs == 1, na.rm = TRUE)
 
 df <- df %>%
@@ -67,7 +66,8 @@ df <- df %>%
     )
   )
 
-# Optional: extra truncation of extremely large weights
+# Extra truncation of extremely large weights
+
 q99 <- quantile(df$ipw, 0.99, na.rm = TRUE)
 df$ipw <- pmin(df$ipw, q99)
 
@@ -99,22 +99,25 @@ fit_logit_weights_full_darwin <- glm(
 
 ## Plot showing results of logistic regression
 
-## 1. Check factor levels
+## Check factor levels
 levels(df_analysis$Science_Type)
 
 # Make sure NIH_funding is 0/1 numeric and is_clinical is factor(False, True)
 
-## 2. Choose reference / typical values for other covariates
+## Choose reference / typical values for other covariates
+
 # Here:
 # - year_c at 0 (i.e., year = 2012)
 # - quartile_author_count at Q1
 # - institution_count at its median
 # - reference_count at its median
 # - is_clinical = "False"
+
 inst_med  <- median(df_analysis$institution_count, na.rm = TRUE)
 ref_med   <- median(df_analysis$reference_count, na.rm = TRUE)
 
-## 3. Build prediction grid
+## Build prediction grid
+
 pred_grid <- expand.grid(
   NIH_funding          = c(0, 1),
   Science_Type         = levels(df_analysis$Science_Type),
@@ -124,8 +127,8 @@ pred_grid <- expand.grid(
   reference_count      = ref_med,
   is_clinical          = FALSE)
 
+## Get predicted probabilities and (approx) CIs
 
-## 4. Get predicted probabilities and (approx) CIs
 pred_link <- predict(fit_logit_weights_full_darwin, newdata = pred_grid, type = "link", se.fit = TRUE)
 
 pred_grid$linpred  <- pred_link$fit
@@ -134,10 +137,12 @@ pred_grid$prob     <- plogis(pred_grid$linpred)
 pred_grid$prob_low <- plogis(pred_grid$linpred - 1.96 * pred_grid$se_link)
 pred_grid$prob_high<- plogis(pred_grid$linpred + 1.96 * pred_grid$se_link)
 
-## 5. Nice labels for plotting
+## Nice labels for plotting
+
 pred_grid$NIH_funding_lab <- ifelse(pred_grid$NIH_funding == 1, "NIH-funded", "Not NIH-funded")
 
-## 6. Plot
+## Plot
+
 ggplot(pred_grid, aes(x = Science_Type, y = prob, color = NIH_funding_lab, group = NIH_funding_lab)) +
   geom_point(position = position_dodge(width = 0.3), size = 4) +
   geom_errorbar(
