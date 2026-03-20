@@ -25,6 +25,7 @@ df_nih<-df %>% filter(NIH_funding==1 & Novelty_Type != "Missing") %>%
   mutate(year_c=year-2012)
 
 # Multinomial model with non-linear time trend + controls
+
 mod_multi_ctrl <- multinom(
   Novelty_Type ~ ns(year_c, df = 3) +
     Science_Type +
