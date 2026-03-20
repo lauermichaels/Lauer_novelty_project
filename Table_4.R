@@ -7,7 +7,7 @@ library(splines) # splines
 library(sandwich) # robust standard errors
 library(lmtest) # testing robust standard errors
 
-setwd("~/Library/CloudStorage/OneDrive-Personal/Sciscinet v2")
+setwd("~")
 
 df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2001_2022_3_1_26.parquet")
 
@@ -17,9 +17,7 @@ set.seed(123)
 df <- df_opa_sciscinet_2001_2022 %>%
   sample_frac(0.05)
 
-#----------------------------------------------------------
-# 0. Create journal_volume, year_c, and missingness flag
-#----------------------------------------------------------
+# Create journal_volume, year_c, and missingness flag
 
 df <- df %>%
   # journal_volume = total number of papers in each journal
@@ -37,10 +35,9 @@ df <- df %>%
   
   filter(!is.na(relative_citation_ratio))
 
-#----------------------------------------------------------
-# 1. Fit missingness model for Novelty_Type
+
+# Fit missingness model for Novelty_Type
 #    P(Novelty_Type observed | covariates)
-#----------------------------------------------------------
 
 fit_miss_lpm <- lm(
   novelty_obs ~
@@ -75,9 +72,8 @@ df <- df %>%
 q99 <- quantile(df$ipw, 0.99, na.rm = TRUE)
 df$ipw <- pmin(df$ipw, q99)
 
-#----------------------------------------------------------
-# 2. Restrict to observed Novelty_Type and define outcome
-#----------------------------------------------------------
+
+# Restrict to observed Novelty_Type and known RCR and define outcome
 
 df_analysis <- df %>%
   filter(novelty_obs == 1 & !is.na(relative_citation_ratio)) %>%
@@ -85,13 +81,8 @@ df_analysis <- df %>%
     Highly_Cited_num = ifelse(Highly_Cited==TRUE, 1, 0)
   )
 
-# Check variation in outcome
 
-table(df_analysis$Highly_Cited)
-
-#----------------------------------------------------------
-# 3. Weighted logistic regression for Highly_Cited
-#----------------------------------------------------------
+# Weighted logistic regression for Highly_Cited
 
 fit_logit_weights_cited_simple <- glm(
   Highly_Cited_num ~
@@ -189,8 +180,6 @@ screenreg(
 )
 
 # Save table
-
-setwd("~/Library/CloudStorage/OneDrive-Personal/Novelty Paper")
 
 htmlreg(
   list(fit_logit_weights_cited_simple, fit_logit_weights_cited_novelty, fit_logit_weights_cited_novelty_science, fit_logit_weights_cited_full),
