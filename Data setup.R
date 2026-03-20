@@ -27,7 +27,7 @@ opa_total <- read_csv_duckdb("icite_metadata.csv",
 
   opa_total %>% compute_parquet("opa_.parquet")
   
-# Merge with NIH PMIDs -- I generated a list of NIH PMIDs from ExPORTER using R script NIH PMIDs 2 27 26.R
+# Merge with NIH PMIDs -- I generated a list of NIH PMIDs from ExPORTER (see code below)
 # NIH ExPORTER is at https://reporter.nih.gov/exporter.
   # I eliminated PMIDs that are linked to other sponsors like AHRQ, FDA, CDC, and VA
   # It includes NIH intramural and extramural
@@ -177,4 +177,345 @@ df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2022.parquet") %>%
 
 df_opa_sciscinet_2001_2022 %>%
   write_parquet("df_opa_sciscinet_2001_2022_3_1_26.parquet")
+
+########################################################################################
+
+## Appendix: Code to generate NIH-funded PMIDs
+
+########################################################################################
+
+# Identify NIH intramural and extramural projects
+
+# Import ExPORTER files and keep needed fields
+
+RePORTER_PRJ_C_FY1985 <- read_csv("RePORTER_PRJ_C_FY1985.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY1986 <- read_csv("RePORTER_PRJ_C_FY1986.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY1987 <- read_csv("RePORTER_PRJ_C_FY1987.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY1988 <- read_csv("RePORTER_PRJ_C_FY1988.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY1989 <- read_csv("RePORTER_PRJ_C_FY1989.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY1990 <- read_csv("RePORTER_PRJ_C_FY1990.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY1991 <- read_csv("RePORTER_PRJ_C_FY1991.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY1992 <- read_csv("RePORTER_PRJ_C_FY1992.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY1993 <- read_csv("RePORTER_PRJ_C_FY1993.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY1994 <- read_csv("RePORTER_PRJ_C_FY1994.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY1995 <- read_csv("RePORTER_PRJ_C_FY1995.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY1996 <- read_csv("RePORTER_PRJ_C_FY1996.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY1997 <- read_csv("RePORTER_PRJ_C_FY1997.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY1998 <- read_csv("RePORTER_PRJ_C_FY1998.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY1999 <- read_csv("RePORTER_PRJ_C_FY1999.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2000 <- read_csv("RePORTER_PRJ_C_FY2000.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2001 <- read_csv("RePORTER_PRJ_C_FY2001.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2002 <- read_csv("RePORTER_PRJ_C_FY2002.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2003 <- read_csv("RePORTER_PRJ_C_FY2003.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2004 <- read_csv("RePORTER_PRJ_C_FY2004.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2005 <- read_csv("RePORTER_PRJ_C_FY2005.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2006 <- read_csv("RePORTER_PRJ_C_FY2006.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2007 <- read_csv("RePORTER_PRJ_C_FY2007.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2008 <- read_csv("RePORTER_PRJ_C_FY2008.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2009 <- read_csv("RePORTER_PRJ_C_FY2009.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2010 <- read_csv("RePORTER_PRJ_C_FY2010.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2011 <- read_csv("RePORTER_PRJ_C_FY2011.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2012 <- read_csv("RePORTER_PRJ_C_FY2012.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2013 <- read_csv("RePORTER_PRJ_C_FY2013.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2014 <- read_csv("RePORTER_PRJ_C_FY2014.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2015 <- read_csv("RePORTER_PRJ_C_FY2015.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2016 <- read_csv("RePORTER_PRJ_C_FY2016.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2017 <- read_csv("RePORTER_PRJ_C_FY2017.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2018 <- read_csv("RePORTER_PRJ_C_FY2018.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2019 <- read_csv("RePORTER_PRJ_C_FY2019.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2020 <- read_csv("RePORTER_PRJ_C_FY2020.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2021 <- read_csv("RePORTER_PRJ_C_FY2021.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2022 <- read_csv("RePORTER_PRJ_C_FY2022.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2023 <- read_csv("RePORTER_PRJ_C_FY2023.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2024 <- read_csv("RePORTER_PRJ_C_FY2024.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+RePORTER_PRJ_C_FY2025 <- read_csv("RePORTER_PRJ_C_FY2025.csv") %>% clean_names() %>%
+  select(activity, administering_ic, core_project_num, ic_name)
+
+# Bring together all projects and then identify those that are NIH
+
+all_projects<-bind_rows(
+  RePORTER_PRJ_C_FY1985, RePORTER_PRJ_C_FY1986, RePORTER_PRJ_C_FY1987, RePORTER_PRJ_C_FY1988, RePORTER_PRJ_C_FY1989,
+  RePORTER_PRJ_C_FY1990, RePORTER_PRJ_C_FY1991, RePORTER_PRJ_C_FY1992, RePORTER_PRJ_C_FY1993, RePORTER_PRJ_C_FY1994,
+  RePORTER_PRJ_C_FY1995, RePORTER_PRJ_C_FY1996, RePORTER_PRJ_C_FY1997, RePORTER_PRJ_C_FY1998, RePORTER_PRJ_C_FY1999,
+  RePORTER_PRJ_C_FY2000, RePORTER_PRJ_C_FY2001, RePORTER_PRJ_C_FY2002, RePORTER_PRJ_C_FY2003, RePORTER_PRJ_C_FY2004,
+  RePORTER_PRJ_C_FY2005, RePORTER_PRJ_C_FY2006, RePORTER_PRJ_C_FY2007, RePORTER_PRJ_C_FY2008, RePORTER_PRJ_C_FY2009,
+  RePORTER_PRJ_C_FY2010, RePORTER_PRJ_C_FY2011, RePORTER_PRJ_C_FY2012, RePORTER_PRJ_C_FY2013, RePORTER_PRJ_C_FY2014,
+  RePORTER_PRJ_C_FY2015, RePORTER_PRJ_C_FY2016, RePORTER_PRJ_C_FY2017, RePORTER_PRJ_C_FY2018, RePORTER_PRJ_C_FY2019,
+  RePORTER_PRJ_C_FY2020, RePORTER_PRJ_C_FY2021, RePORTER_PRJ_C_FY2022, RePORTER_PRJ_C_FY2023, RePORTER_PRJ_C_FY2024,
+  RePORTER_PRJ_C_FY2025
+  ) %>% distinct()
+
+# Make a table of ic names and abbreviations
+
+ic_table <- all_projects %>% select(administering_ic, ic_name) %>%
+  distinct() %>% arrange(administering_ic)
+
+write.csv(ic_table, "ic_table.csv", row.names = FALSE)
+
+nih_projects <- all_projects %>%
+  filter(administering_ic %in% 
+           c("RR","TW","AT","CA","EY","HG","HL","HG","AG","AA",
+             "AI","AR","EB","HD","DA","DC","DE","DK","ES","GM",
+             "MH","MD","NS","NR","LM","OD","TR","AO","BC","BU",
+             "CL","CM","CN","CP","CT","HB","HC","HO","HR","HV",
+             "NU","PC","RG","RS","SC","WH")) %>%
+  select(core_project_num) %>% distinct() %>%
+  rename(project_number = core_project_num)
+
+# Now list of PMIDs along with project numbers
+
+RePORTER_PUBLNK_C_FY2025 <- read_csv("RePORTER_PUBLNK_C_FY2025.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_FY2024 <- read_csv("RePORTER_PUBLNK_C_FY2024.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_FY2023 <- read_csv("RePORTER_PUBLNK_C_FY2023.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_FY2022 <- read_csv("RePORTER_PUBLNK_C_FY2022.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_2021 <- read_csv("RePORTER_PUBLNK_C_2021.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_2020 <- read_csv("RePORTER_PUBLNK_C_2020.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_2019 <- read_csv("RePORTER_PUBLNK_C_2019.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_2018 <- read_csv("RePORTER_PUBLNK_C_2018.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_2017 <- read_csv("RePORTER_PUBLNK_C_2017.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_2016 <- read_csv("RePORTER_PUBLNK_C_2016.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_2015 <- read_csv("RePORTER_PUBLNK_C_2015.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_2014 <- read_csv("RePORTER_PUBLNK_C_2014.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_2013 <- read_csv("RePORTER_PUBLNK_C_2013.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_2012 <- read_csv("RePORTER_PUBLNK_C_2012.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_2011 <- read_csv("RePORTER_PUBLNK_C_2011.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+
+RePORTER_PUBLNK_C_2010 <- read_csv("RePORTER_PUBLNK_C_2010.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_2009 <- read_csv("RePORTER_PUBLNK_C_2009.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_2008 <- read_csv("RePORTER_PUBLNK_C_2008.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_2007 <- read_csv("RePORTER_PUBLNK_C_2007.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_2006 <- read_csv("RePORTER_PUBLNK_C_2006.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+
+RePORTER_PUBLNK_C_2005 <- read_csv("RePORTER_PUBLNK_C_2005.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_2004 <- read_csv("RePORTER_PUBLNK_C_2004.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_2003 <- read_csv("RePORTER_PUBLNK_C_2003.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_2002 <- read_csv("RePORTER_PUBLNK_C_2002.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_2001 <- read_csv("RePORTER_PUBLNK_C_2001.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+
+RePORTER_PUBLNK_C_2000 <- read_csv("RePORTER_PUBLNK_C_2000.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_1999 <- read_csv("RePORTER_PUBLNK_C_1999.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_1998 <- read_csv("RePORTER_PUBLNK_C_1998.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_1997 <- read_csv("RePORTER_PUBLNK_C_1997.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_1996 <- read_csv("RePORTER_PUBLNK_C_1996.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+
+RePORTER_PUBLNK_C_1995 <- read_csv("RePORTER_PUBLNK_C_1995.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_1994 <- read_csv("RePORTER_PUBLNK_C_1994.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_1993 <- read_csv("RePORTER_PUBLNK_C_1993.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_1992 <- read_csv("RePORTER_PUBLNK_C_1992.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_1991 <- read_csv("RePORTER_PUBLNK_C_1991.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+
+RePORTER_PUBLNK_C_1990 <- read_csv("RePORTER_PUBLNK_C_1990.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_1989 <- read_csv("RePORTER_PUBLNK_C_1989.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_1988 <- read_csv("RePORTER_PUBLNK_C_1988.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_1987 <- read_csv("RePORTER_PUBLNK_C_1987.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_1986 <- read_csv("RePORTER_PUBLNK_C_1986.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+
+RePORTER_PUBLNK_C_1985 <- read_csv("RePORTER_PUBLNK_C_1985.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_1984 <- read_csv("RePORTER_PUBLNK_C_1984.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_1983 <- read_csv("RePORTER_PUBLNK_C_1983.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_1982 <- read_csv("RePORTER_PUBLNK_C_1982.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+RePORTER_PUBLNK_C_1981 <- read_csv("RePORTER_PUBLNK_C_1981.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+
+RePORTER_PUBLNK_C_1980 <- read_csv("RePORTER_PUBLNK_C_1980.csv") %>% clean_names %>%
+  select(project_number, pmid) %>% distinct()
+
+all_pmids<-bind_rows(
+  RePORTER_PUBLNK_C_1980, RePORTER_PUBLNK_C_1981, RePORTER_PUBLNK_C_1982, RePORTER_PUBLNK_C_1983, RePORTER_PUBLNK_C_1984,
+  RePORTER_PUBLNK_C_1985, RePORTER_PUBLNK_C_1986, RePORTER_PUBLNK_C_1987, RePORTER_PUBLNK_C_1988, RePORTER_PUBLNK_C_1989,
+  RePORTER_PUBLNK_C_1990, RePORTER_PUBLNK_C_1991, RePORTER_PUBLNK_C_1992, RePORTER_PUBLNK_C_1993, RePORTER_PUBLNK_C_1994,
+  RePORTER_PUBLNK_C_1995, RePORTER_PUBLNK_C_1996, RePORTER_PUBLNK_C_1997, RePORTER_PUBLNK_C_1998, RePORTER_PUBLNK_C_1999,
+  RePORTER_PUBLNK_C_2000, RePORTER_PUBLNK_C_2001, RePORTER_PUBLNK_C_2002, RePORTER_PUBLNK_C_2003, RePORTER_PUBLNK_C_2004,
+  RePORTER_PUBLNK_C_2005, RePORTER_PUBLNK_C_2006, RePORTER_PUBLNK_C_2007, RePORTER_PUBLNK_C_2008, RePORTER_PUBLNK_C_2009,
+  RePORTER_PUBLNK_C_2010, RePORTER_PUBLNK_C_2011, RePORTER_PUBLNK_C_2012, RePORTER_PUBLNK_C_2013, RePORTER_PUBLNK_C_2014,
+  RePORTER_PUBLNK_C_2015, RePORTER_PUBLNK_C_2016, RePORTER_PUBLNK_C_2017, RePORTER_PUBLNK_C_2018, RePORTER_PUBLNK_C_2019,
+  RePORTER_PUBLNK_C_2020, RePORTER_PUBLNK_C_2021, RePORTER_PUBLNK_C_FY2022, RePORTER_PUBLNK_C_FY2023, RePORTER_PUBLNK_C_FY2024,
+  RePORTER_PUBLNK_C_FY2025
+) %>% distinct()
+
+# Now left_join NIH project numbers to the PMIDs
+
+nih_project_pmids <- nih_projects %>% left_join(all_pmids) %>% distinct() %>%
+  filter(!is.na(pmid)) %>%
+  select(pmid) %>% distinct() %>%
+  mutate(funding_NIH=1)
+
+# Save result in .RData and .parquet formats
+
+save(nih_project_pmids, file="NIH_pmids_2_27_26.RData")
+write_parquet(nih_project_pmids, "NIH_pmids_2_27_26.parquet")
+
+
+
+
+
 
