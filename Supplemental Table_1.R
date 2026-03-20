@@ -5,7 +5,7 @@ library(tidyverse) # data manipulation and ggplots
 library(gtsummary) # summary tables
 library(gt) # summary tables -- export
 
-setwd("~/Library/CloudStorage/OneDrive-Personal/Sciscinet v2")
+setwd("~")
 
 df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2001_2022_3_1_26.parquet")
 
@@ -29,8 +29,6 @@ df_tbl <-
   mutate(
     Science_Type = factor(Science_Type, levels = c("Fundamental","Mixed","Human-focused"))
   )
-
-# ---- 3) gtsummary table (Funding as columns) ----
 
 # Functions for extreme values
 
@@ -120,8 +118,6 @@ tbl_by_funding <-
 tbl_gt_supp_Table_1 <- as_gt(tbl_by_funding) %>%
   gt::tab_options(table.font.names = "Times New Roman")
 tbl_gt_supp_Table_1
-
-setwd("~/Library/CloudStorage/OneDrive-Personal/Novelty Paper")
 
 # Save table
 gtsave(tbl_gt_supp_Table_1, "Supplemental Table 1 3 3 26.html")
