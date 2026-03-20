@@ -2,10 +2,7 @@
 
 library(arrow) # read parquet files
 library(tidyverse) # data manipulation and ggplots
-library(texreg) # regression results
 library(splines) # splines
-library(sandwich) # robust standard errors
-library(lmtest) # testing robust standard errors
 
 setwd("~")
 
