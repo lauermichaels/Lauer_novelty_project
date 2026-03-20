@@ -5,7 +5,7 @@ library(tidyverse) # data manipulation and ggplots
 library(gtsummary) # summary tables
 library(gt) # summary tables -- export
 
-setwd("~/Library/CloudStorage/OneDrive-Personal/Sciscinet v2")
+setwd("~")
 
 df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2001_2022_3_1_26.parquet")
 
@@ -190,13 +190,11 @@ tbl_3b <-
     all_stat_cols() ~ "Mean (SD); n (%)") %>%
   bold_labels()
 
-# Optional: convert to gt for extra styling / export
+# convert to gt for extra styling / export
 tbl_3b_gt <- as_gt(tbl_3b) %>%
   gt::tab_options(table.font.names = "Times New Roman")
 tbl_3b_gt
 
 supplementary_table_3 <- gt_group(tbl_3a_gt, tbl_3b_gt)
-
-setwd("~/Library/CloudStorage/OneDrive-Personal/Novelty Paper")
 
 gtsave(supplementary_table_3, "Supplementary Table 3.html")
