@@ -77,8 +77,6 @@ df_analysis <- df %>%
   filter(novelty_obs == 1) 
 
 df_analysis <- df_analysis %>%
-  mutate(novel=ifelse(Novelty_Type=="Avant-garde"|Novelty_Type=="Darwin's Tower",1,0)) %>%
-  mutate(conventional=ifelse(Novelty_Type=="Accedpted Wisdom"|Novelty_Type=="Darwin's Tower",1,0)) %>%
   mutate(darwin=ifelse(Novelty_Type=="Darwin's Tower",1,0))
 
 # Regression model
@@ -98,11 +96,6 @@ fit_logit_weights_full_darwin <- glm(
 )
 
 ## Plot showing results of logistic regression
-
-## Check factor levels
-levels(df_analysis$Science_Type)
-
-# Make sure NIH_funding is 0/1 numeric and is_clinical is factor(False, True)
 
 ## Choose reference / typical values for other covariates
 
