@@ -178,7 +178,7 @@ htmlreg(
   custom.model.names = c("Novel", "Conventional","Darwin"),
   custom.coef.map = coef_labels,
   caption = "",
-  file="Table 3 3 1 26.html",
+  file="Table 3.html",
   caption.above = TRUE,
   digits = 3
 )
