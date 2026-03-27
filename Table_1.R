@@ -23,7 +23,7 @@ df_tbl <-
     author_count_opa, institution_count, reference_count,
     Atyp_10pct_Z, Atyp_Median_Z,
     Novelty_Type, Science_Type, 
-    relative_citation_ratio, Highly_Cited
+    relative_citation_ratio, Highly_Cited, is_clinical
   ) %>%
   
   mutate(
@@ -62,7 +62,7 @@ tbl_by_funding <-
     institution_count,
     reference_count,
     Atyp_10pct_Z, Atyp_Median_Z,
-    Novelty_Type, Science_Type
+    Novelty_Type, Science_Type, is_clinical
   ) %>%
   tbl_summary(
     by = Funding,
@@ -73,7 +73,8 @@ tbl_by_funding <-
       Atyp_10pct_Z ~ "continuous",
       Atyp_Median_Z ~ "continuous",
       Novelty_Type ~ "categorical",
-      Science_Type ~ "categorical"
+      Science_Type ~ "categorical",
+      is_clinical ~ "dichotomous"
     ),
     label = list(
       author_count_opa ~ "Number of Authors",
@@ -82,7 +83,8 @@ tbl_by_funding <-
       Atyp_10pct_Z ~ "10th Percentile Z-score",
       Atyp_Median_Z ~ "Median Z-score",
       Novelty_Type ~ "Article Type",
-      Science_Type ~ "Science Type"
+      Science_Type ~ "Science Type",
+      is_clinical ~ "Clinical Trial"
     ),
     statistic = list(
       statistic = all_continuous() ~ "{mean_trimmed} ({sd_trimmed})",
@@ -106,7 +108,7 @@ tbl_by_funding <-
           c(
             "author_count_opa","institution_count","reference_count",
             "Atyp_10pct_Z", "Atyp_Median_Z",
-            "Novelty_Type", "Science_Type"
+            "Novelty_Type", "Science_Type", "is_clinical"
           )
         )
       ) %>%
@@ -126,4 +128,4 @@ tbl_gt_Table_1 <- as_gt(tbl_by_funding) %>%
 tbl_gt_Table_1
 
 # Save table
-gtsave(tbl_gt_Table_1, "Table 1 3 1 26.html")
+gtsave(tbl_gt_Table_1, "Table 1.html")
