@@ -120,7 +120,7 @@ summary(fit_logit_weights_full_conventional)
 
 # Robust SEs -- virtually identical
 vcov_robust <- sandwich::vcovHC(fit_logit_weights_full_conventional, type = "HC0")
-coeftest(fit_logit_weights, vcov. = vcov_robust)
+coeftest(fit_logit_weights_full_conventional, vcov. = vcov_robust)
 
 fit_logit_weights_full_darwin <- glm(
   darwin ~
@@ -140,7 +140,7 @@ summary(fit_logit_weights_full_darwin)
 
 # Robust SEs -- virtually identical
 vcov_robust <- sandwich::vcovHC(fit_logit_weights_full_darwin, type = "HC0")
-coeftest(fit_logit_weights, vcov. = vcov_robust)
+coeftest(fit_logit_weights_full_darwin, vcov. = vcov_robust)
 
 # Texreg display
 
