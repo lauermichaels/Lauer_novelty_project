@@ -136,8 +136,8 @@ fit_logit_weights_cited_full <- glm(
 summary(fit_logit_weights_cited_full)  
 
 # Robust SEs
-vcov_robust <- sandwich::vcovHC(fit_logit_weights, type = "HC0")
-coeftest(fit_logit_weights, vcov. = vcov_robust)
+vcov_robust <- sandwich::vcovHC(fit_logit_weights_cited_full, type = "HC0")
+coeftest(fit_logit_weights_cited_full, vcov. = vcov_robust)
 
 # Virtually identical
 
@@ -164,7 +164,7 @@ coef_labels <- list(
   "ns(reference_count, 3)1" = "Reference count (spline 1)",
   "ns(reference_count, 3)2" = "Reference count (spline 2)",
   "ns(reference_count, 3)3" = "Reference count (spline 3)",
-  "is_clinicalTrue"           = "Clinical Trial",
+  "is_clinicalTRUE"           = "Clinical Trial",
   "Novelty_TypeAvant-garde:Science_TypeHuman-focused" = "Avant-garde X Human-focused",
   "Novelty_TypeAccepted Wisdom:Science_TypeHuman-focused" = "Accepted Wisdom X Human-focused",
   "Novelty_TypeDarwin's Tower:Science_TypeHuman-focused" = "Darwin's Tower X Human-focused",
@@ -186,7 +186,7 @@ htmlreg(
   custom.model.names = c("(1)", "(2)","(3)", "(4)"),
   custom.coef.map = coef_labels,
   caption = "",
-  file="Table 4 3 1 26.html",
+  file="Table 4.html",
   caption.above = TRUE,
   digits = 3
 )
