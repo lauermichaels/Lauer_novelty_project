@@ -338,4 +338,4 @@ plot_ecdf_conventionality_funding<-ggplot(ecdf_df, aes(x = signed_log2, y = ecdf
 plot_ecdf_novelty_science_type + plot_ecdf_conventionality_science_type + 
   plot_ecdf_novelty_funding + plot_ecdf_conventionality_funding  + plot_layout(ncol=2)
 
-ggsave("Figure 1 3 1 26.jpg", width = 10, height = 7.5, units = c("in"), dpi=600)
+ggsave("Figure 1.jpg", width = 10, height = 7.5, units = c("in"), dpi=600)
