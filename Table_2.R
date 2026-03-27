@@ -18,7 +18,7 @@ df_tbl_2 <-
          NIH_funding,
          author_count_opa, institution_count, reference_count,
          Atyp_10pct_Z, Atyp_Median_Z,
-         Novelty_Type, Science_Type
+         Novelty_Type, Science_Type, is_clinical
   ) %>%
   
   mutate(
@@ -48,7 +48,7 @@ tbl_2 <-
          institution_count,
          reference_count,
          Atyp_10pct_Z, Atyp_Median_Z,
-         Novelty_Type, Science_Type
+         Novelty_Type, Science_Type, is_clinical
   ) %>%
   tbl_summary(
     by = year_group,
@@ -60,7 +60,8 @@ tbl_2 <-
       Atyp_10pct_Z ~ "continuous",
       Atyp_Median_Z ~ "continuous",
       Novelty_Type ~ "categorical",
-      Science_Type ~ "categorical"
+      Science_Type ~ "categorical",
+      is_clinical ~ "dichotomous"
     ),
     value = list(
       NIH_funding ~ TRUE
@@ -73,7 +74,8 @@ tbl_2 <-
       Atyp_10pct_Z ~ "10th Percentile Z-score",
       Atyp_Median_Z ~ "Median Z-score",
       Novelty_Type ~ "Article Type",
-      Science_Type ~ "Science Type"
+      Science_Type ~ "Science Type",
+      is_clinical ~ "Clinical Trial"
     ),
     statistic = list(
       statistic = all_continuous() ~ "{mean_trimmed} ({sd_trimmed})",
@@ -97,7 +99,7 @@ tbl_2 <-
           c("NIH_funding",
             "author_count_opa","institution_count","reference_count",
             "Atyp_10pct_Z", "Atyp_Median_Z",
-            "Novelty_Type", "Science_Type"
+            "Novelty_Type", "Science_Type", "is_clinical"
           )
         )
       ) %>%
@@ -117,4 +119,4 @@ tbl_gt_Table_2 <- as_gt(tbl_2) %>%
 tbl_gt_Table_2
 
 # Save table
-gtsave(tbl_gt_Table_2, "Table 2 3 1 26.html")
+gtsave(tbl_gt_Table_2, "Table 2.html")
