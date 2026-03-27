@@ -18,7 +18,7 @@ df_tbl_2 <-
          NIH_funding,
          author_count_opa, institution_count, reference_count,
          Atyp_10pct_Z, Atyp_Median_Z,
-         Novelty_Type, Science_Type
+         Novelty_Type, Science_Type, is_clinical
   ) %>%
   
   mutate(
@@ -54,7 +54,7 @@ tbl_2a <-
          institution_count,
          reference_count,
          Atyp_10pct_Z, Atyp_Median_Z,
-         Novelty_Type, Science_Type
+         Novelty_Type, Science_Type, is_clinical
   ) %>%
   tbl_summary(
     by = year_group,
@@ -65,7 +65,8 @@ tbl_2a <-
       Atyp_10pct_Z ~ "continuous",
       Atyp_Median_Z ~ "continuous",
       Novelty_Type ~ "categorical",
-      Science_Type ~ "categorical"
+      Science_Type ~ "categorical",
+      is_clinical ~ "dichotomous"
     ),
     label = list(
       author_count_opa ~ "Number of Authors",
@@ -74,7 +75,8 @@ tbl_2a <-
       Atyp_10pct_Z ~ "10th Percentile Z-score",
       Atyp_Median_Z ~ "Median Z-score",
       Novelty_Type ~ "Article Type",
-      Science_Type ~ "Science Type"
+      Science_Type ~ "Science Type",
+      is_clinical ~ "Clinical Trial"
     ),
     statistic = list(
       statistic = all_continuous() ~ "{mean_trimmed} ({sd_trimmed})",
@@ -98,7 +100,7 @@ tbl_2a <-
           c(
             "author_count_opa","institution_count","reference_count",
             "Atyp_10pct_Z", "Atyp_Median_Z",
-            "Novelty_Type", "Science_Type"
+            "Novelty_Type", "Science_Type", "is_clinical"
           )
         )
       ) %>%
@@ -130,7 +132,7 @@ tbl_2b <-
          institution_count,
          reference_count,
          Atyp_10pct_Z, Atyp_Median_Z,
-         Novelty_Type, Science_Type
+         Novelty_Type, Science_Type, is_clinical
   ) %>%
   tbl_summary(
     by = year_group,
@@ -141,7 +143,8 @@ tbl_2b <-
       Atyp_10pct_Z ~ "continuous",
       Atyp_Median_Z ~ "continuous",
       Novelty_Type ~ "categorical",
-      Science_Type ~ "categorical"
+      Science_Type ~ "categorical",
+      is_clinical ~ "dichotomous"
     ),
     label = list(
       author_count_opa ~ "Number of Authors",
@@ -150,7 +153,8 @@ tbl_2b <-
       Atyp_10pct_Z ~ "10th Percentile Z-score",
       Atyp_Median_Z ~ "Median Z-score",
       Novelty_Type ~ "Article Type",
-      Science_Type ~ "Science Type"
+      Science_Type ~ "Science Type",
+      is_clinical ~ "Clinical Trial"
     ),
     statistic = list(
       statistic = all_continuous() ~ "{mean_trimmed} ({sd_trimmed})",
@@ -174,7 +178,7 @@ tbl_2b <-
           c(
             "author_count_opa","institution_count","reference_count",
             "Atyp_10pct_Z", "Atyp_Median_Z",
-            "Novelty_Type", "Science_Type"
+            "Novelty_Type", "Science_Type", "is_clinical"
           )
         )
       ) %>%
