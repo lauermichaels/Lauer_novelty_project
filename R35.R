@@ -2,6 +2,8 @@
 
 library(arrow) # read parquet files
 library(tidyverse) # data manipulation and ggplots
+library(gtsummary) # summary tables
+library(gt) # summary tables -- export
 
 # Identify NIGMS R35 papers -- read Publink files for papers published after 2017 and limit
 # to those with project numbers indicating NIGMS R35
