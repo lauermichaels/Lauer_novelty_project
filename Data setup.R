@@ -190,8 +190,10 @@ df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2022.parquet") %>%
          Atyp_Median_Z, reference_count, institution_count, Funding, NIH_funding,
          Highly_Cited, missing_atyp, quartile_author_count)
 
+# Save final data frame
+
 df_opa_sciscinet_2001_2022 %>%
-  write_parquet("df_opa_sciscinet_2001_2022_3_1_26.parquet")
+  write_parquet("df_opa_sciscinet_2001_2022_3_1_26.parquet") 
 
 ########################################################################################
 
