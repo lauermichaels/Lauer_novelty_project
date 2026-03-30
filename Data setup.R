@@ -42,7 +42,7 @@ opa_ %>%
     compute_parquet("opa_use.parquet")
 
 # To enable merge with Sciscinet v2 (via doi), convert doi to lower case
-# Count number of authors, then delete memory-using columns
+# Count number of authors, then delete memory-using column
 
 opa_use2<-open_dataset("opa_use.parquet") %>%
   mutate(doi=str_to_lower(doi)) %>%
@@ -59,8 +59,9 @@ opa_use2%>%
 ########################################################################################
 
 # Read Sciscinet V2 data, limit to articles with nonmissing Atyp_10pct_Z
-# Change DOI to lower case to enable merger with Sciscinet V2
+# Change DOI to lower case to enable merger Sciscinet V2 with OPA data
 # Sciscinet V2 data is at https://huggingface.co/datasets/Northwestern-CSSI/sciscinet-v2/tree/main. 
+# I started pulling data from 1980 to 2024 (to match OPA range)
 
 sciscinet_v2_novelty_1980_2024 <- open_dataset('sciscinet_papers.parquet') %>%
   filter(!is.na(doi)) %>% filter(doctype=="article") %>% filter(!is.na(Atyp_10pct_Z)) %>%
@@ -68,6 +69,7 @@ sciscinet_v2_novelty_1980_2024 <- open_dataset('sciscinet_papers.parquet') %>%
   select(doi, Atyp_Median_Z, Atyp_10pct_Z, reference_count, institution_count) %>%
   mutate(doi = str_remove(doi, "https://doi.org/")) %>%
   mutate(doi = str_to_lower(doi))
+
 sciscinet_v2_novelty_1980_2024<-collect(sciscinet_v2_novelty_1980_2024)
 
 # Save as a parquet file
@@ -116,8 +118,8 @@ df_opa_sciscinet_2001_2022 <- read_parquet("opa_sciscinet_3_1_26.parquet") %>%
   
   filter(is_research_article==TRUE) %>%
   
-  # Limit to 2001 to 2022 and to those in triangle of biomedicine
-  # Exclude 2011 due to known anomalies of novelty statistics in that year
+  # Limit to 2001 to 2022 and to those in triangle of biomedicine due to high rates of missingness before & after
+  # Exclude 2011 due to known anomalies of novelty statistics in that year -- reported to Sciscinet curators
   
   filter(year>=2001 & year <= 2022 & year !=2011) %>%
   filter(animal > 0 | human > 0 | molecular_cellular > 0) %>% 
@@ -127,6 +129,18 @@ df_opa_sciscinet_2001_2022 <- read_parquet("opa_sciscinet_3_1_26.parquet") %>%
 df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2022.parquet") %>%
 
   # Define terms
+  # Science Type is human-focused if OPA value for "human" - based on proportion of MeSH terms is 1
+  # Science Type is fundamental if OPA value for "human" - based on proportion of MeSH terms is 0 -- meaning that
+  #    animal >0 OR molecular_cellular > 0 but human is 0.
+  # Novelty - conventionality classification follows Mukhurjee (see text of paper)
+  #   Atyp_10pct_Z, which is the 10th percentile Z score for each paper -- if <0 that's high novelty
+  #   Atyp_Median_Z, which is the median Z score for each paper -- if > the median value for the whole data set, that's high conventionality
+  #   If low novelty and low conventionality -- Platypus
+  #   If high novelty and low conventionality -- Avant-garde
+  #   If low novelty and high conventionality -- Accepted Wisdom
+  #   If high novelty and high conventionality (the magic combination, so to speak) -- Darwin's Tower
+  # A paper is considered highly cited if the RCR is >= 3.45 (comes from https://icite.od.nih.gov/globalrcrstats, as seen on 3/30/26)
+  #   This is the 95th percentile for all publications (not just NIH papers)
   
   mutate(year = as.integer(year)) %>%
   mutate(Funding = ifelse(!is.na(funding_NIH), "NIH", "Not NIH")) %>%
@@ -151,6 +165,7 @@ df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2022.parquet") %>%
   mutate(Highly_Cited = (!is.na(relative_citation_ratio) & relative_citation_ratio >= 3.45)) %>%
   
   # Missing authors to median (0.4% missinginess)
+  # Define author quartiles for us in logistic regression analyses, setting Q1 as the reference
   
   mutate(
     author_count_opa = replace(author_count_opa, is.na(author_count_opa), median(author_count_opa, na.rm = TRUE))
@@ -326,11 +341,15 @@ all_projects<-bind_rows(
   ) %>% distinct()
 
 # Make a table of ic names and abbreviations
+# I went through these manually to make sure I was pulling out only those from NIH (not FDA, VA, AHRQ, etc)
+# Besides the IC abbreviations (e.g. CA for NCI and HL for NHLBI) some of these are NIH intrmaural units
 
 ic_table <- all_projects %>% select(administering_ic, ic_name) %>%
   distinct() %>% arrange(administering_ic)
 
 write.csv(ic_table, "ic_table.csv", row.names = FALSE)
+
+# Isolate the NIH projects (i.e., not projects from AHRQ, VA, CDC, FDA ...)
 
 nih_projects <- all_projects %>%
   filter(administering_ic %in% 
@@ -342,7 +361,7 @@ nih_projects <- all_projects %>%
   select(core_project_num) %>% distinct() %>%
   rename(project_number = core_project_num)
 
-# Now list of PMIDs along with project numbers
+# Now list of PMIDs along with project numbers from the ExPORTER publink files
 
 RePORTER_PUBLNK_C_FY2025 <- read_csv("RePORTER_PUBLNK_C_FY2025.csv") %>% clean_names %>%
   select(project_number, pmid) %>% distinct()
