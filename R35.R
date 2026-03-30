@@ -6,7 +6,7 @@ library(tidyverse) # data manipulation and ggplots
 # Identify NIGMS R35 papers -- read Publink files for papers published after 2017 and limit
 # to those with project numbers indicating NIGMS R35
 
-setwd("~/Dropbox/Book 2025/Publication link files")
+setwd("~")
 
 R35_RePORTER_PUBLNK_C_FY2025 <- read_csv("RePORTER_PUBLNK_C_FY2025.csv") %>% clean_names %>%
   select(project_number, pmid) %>% distinct() %>%
