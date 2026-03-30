@@ -204,7 +204,7 @@ gtsave(R35_tbl_gt_Table_1, "Table R35.html")
 df_analysis <- main_df_opa_scisinet_for_R35 %>%
   mutate(darwin=ifelse(Novelty_Type=="Darwin's Tower",1,0)) %>%
   mutate(year_c = year-2020) %>%
-  mutate(R35_group = factor(R35_group, levels=c("NIH, Not NIGMS R35","NIGMS R35"))) %>%
+  mutate(R35_group = factor(R35_group, levels=c("NIH, Not NIGMS MIRA","NIGMS MIRA"))) %>%
   mutate(
     Highly_Cited_num = ifelse(Highly_Cited==TRUE, 1, 0)
   ) %>%
