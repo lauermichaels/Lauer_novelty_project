@@ -66,6 +66,8 @@ R35_pmids <- all_R35_pmids %>% select(pmid) %>% distinct() %>%
 
 # Merge with main data -- NIH publications 2017 and later, nonmissing novelty-conventionality data
 
+df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2001_2022_3_1_26.parquet")
+
 main_df_opa_scisinet_for_R35 <- df_opa_sciscinet_2001_2022 %>%
   filter(year>=2017 & !is.na(Atyp_10pct_Z)) %>%
   left_join(R35_pmids) %>%
