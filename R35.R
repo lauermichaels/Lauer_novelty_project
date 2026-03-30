@@ -74,8 +74,8 @@ main_df_opa_scisinet_for_R35 <- df_opa_sciscinet_2001_2022 %>%
   mutate(GM_R35 = replace_na(GM_R35, 0)) %>%
   filter(NIH_funding==1) %>%
   mutate(R35_group = case_when(
-    GM_R35==1 ~ "NIGMS R35",
-    GM_R35==0 ~ "NIH, Not NIGMS R35"
+    GM_R35==1 ~ "NIGMS MIRA",
+    GM_R35==0 ~ "NIH, Not NIGMS MIRA"
   ))
 
 # Summary table
@@ -273,7 +273,7 @@ summary(fit_logit_R35_full_cited)
 
 coef_labels <- list(
   "(Intercept)"               = "Intercept",
-  "R35_groupNIGMS R35"               = "Funded by NIGMS R35",
+  "R35_groupNIGMS R35"               = "Funded by NIGMS MIRA",
   "Science_TypeMixed"                 = "Mixed topic",
   "Science_TypeHuman-focused"         = "Human-focused topic",
   "ns(year_c, 3)1"       = "Year (spline 1)",
