@@ -9,7 +9,11 @@ setwd("~")
 
 df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2001_2022_3_1_26.parquet")
 
+# Smaller font so table fits on a page
+
 theme_gtsummary_compact()
+
+# Set up data frame for table
 
 df_tbl_2 <-
   df_opa_sciscinet_2001_2022 %>%
@@ -39,6 +43,26 @@ df_tbl_2 <-
       TRUE                        ~ "Other"
     )
   )
+
+# Functions for extreme values
+
+mean_trimmed <- function(x) mean(x, trim = 0.01, na.rm = TRUE)
+sd_trimmed <- function(x, trim = 0.01) {
+  # Remove NA values first to ensure trimming works correctly
+  x_clean <- x[!is.na(x)]
+  
+  # Trim the data
+  n <- length(x_clean)
+  lo <- floor(n * trim) + 1
+  hi <- n - lo + 1
+  x_sorted <- sort(x_clean)
+  x_trimmed <- x_sorted[lo:hi]
+  
+  # Calculate sd on trimmed data
+  sd(x_trimmed)
+}
+
+# Generate table
 
 tbl_2 <-
   df_tbl_2 %>%
@@ -119,4 +143,6 @@ tbl_gt_Table_2 <- as_gt(tbl_2) %>%
 tbl_gt_Table_2
 
 # Save table
+
 gtsave(tbl_gt_Table_2, "Table 2.html")
+
