@@ -1,7 +1,7 @@
 # Table 3 of main paper; Figure 4 of main paper; supplemental Tables 4 and 5
 # Logistic regression analyses for Darwin's Tower papers and highly cited papers
 
-setwd("~/Library/CloudStorage/OneDrive-Personal/Sciscinet v2")
+setwd("~")
 
 library(duckdb) # rapid read-in and sampling of large parquet files
 library(DBI) # database interface
