@@ -5,6 +5,7 @@ setwd("~")
 library(arrow) # Efficiently read and process parquet and other large files
 library(tidyverse) # Data manipulation and ggplots
 library(duckplyr) # leverage DuckDB
+library(janitor) # clean variable names
 
 ########################################################################################
 
