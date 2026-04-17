@@ -48,6 +48,8 @@ sd_trimmed <- function(x, trim = 0.01) {
   sd(x_trimmed)
 }
 
+# Generate table
+
 tbl_by_funding <-
   df_tbl %>%
   select(
