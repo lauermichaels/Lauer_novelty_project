@@ -9,11 +9,7 @@ setwd("~")
 
 df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2001_2022_3_1_26.parquet")
 
-# Numbers for text
-
-table(df_opa_sciscinet_2001_2022$Science_Type)
-
-# Set up table
+# Set up dataframe for table
 
 df_tbl <-
   df_opa_sciscinet_2001_2022 %>%
@@ -52,12 +48,10 @@ sd_trimmed <- function(x, trim = 0.01) {
   sd(x_trimmed)
 }
 
-# Generate table
-
 tbl_by_funding <-
   df_tbl %>%
   select(
-    Funding,  # keep the grouping var first
+    Funding,  # keep the grouping variable first
     author_count_opa,
     institution_count,
     reference_count,
