@@ -1,4 +1,4 @@
-# Figure 7 -- Proportions of novel, conventional, or both according to citation quantile
+# Figure 6 -- Proportions of novel, conventional, or both according to citation quantile
 
 library(arrow) # read parquet files
 library(tidyverse) # data manipulation and ggplots
