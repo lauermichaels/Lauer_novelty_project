@@ -10,11 +10,11 @@ setwd("~")
 
 df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2001_2022_3_1_26.parquet")
 
-# Our working data frame will be a 5% random sample
+# Our working data frame will be a random sample of 500,000
 
 set.seed(123)
 df <- df_opa_sciscinet_2001_2022 %>%
-  sample_frac(0.05)
+  sample_n(500000)
 
 #################################################################################
 
@@ -24,16 +24,13 @@ df <- df_opa_sciscinet_2001_2022 %>%
 
 df_nih<-df %>% filter(NIH_funding==1 & Novelty_Type != "Missing") %>%
   mutate(Novelty_Type = factor(Novelty_Type, levels = c("Platypus", "Avant-garde", "Accepted Wisdom", "Darwin's Tower"))) %>%
-  mutate(year_c=year-2012)
+  mutate(year_c=year-mean(year)
 
 # Multinomial model with non-linear time trend + controls
 
 mod_multi_ctrl <- multinom(
   Novelty_Type ~ ns(year_c, df = 3) +
     Science_Type +
-    institution_count +
-    quartile_author_count +
-    ns(reference_count, df = 3) +
     is_clinical,
   data  = df_nih,
   trace = FALSE
@@ -46,9 +43,6 @@ summary(mod_multi_ctrl)
 mod_multi_ctrl_null <- multinom(
   Novelty_Type ~
     Science_Type +
-    institution_count +
-    quartile_author_count +
-    ns(reference_count, df = 3) +
     is_clinical,
   data  = df_nih,
   trace = FALSE
@@ -146,9 +140,6 @@ df_non_nih<-df %>% filter(NIH_funding==0 & Novelty_Type != "Missing") %>%
 mod_multi_ctrl <- multinom(
   Novelty_Type ~ ns(year_c, df = 3) +
     Science_Type +
-    institution_count +
-    quartile_author_count +
-    ns(reference_count, df = 3) +
     is_clinical,
   data  = df_non_nih,
   trace = FALSE
@@ -161,9 +152,6 @@ summary(mod_multi_ctrl)
 mod_multi_ctrl_null <- multinom(
   Novelty_Type ~
     Science_Type +
-    institution_count +
-    quartile_author_count +
-    ns(reference_count, df = 3) +
     is_clinical,
   data  = df_non_nih,
   trace = FALSE
