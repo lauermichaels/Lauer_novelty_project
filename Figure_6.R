@@ -1,4 +1,4 @@
-# Figure 6 -- likelihood of being highly cited bar plot
+# Figure 5 -- likelihood of being highly cited bar plot
 
 library(arrow) # read parquet files
 library(tidyverse) # data manipulation and ggplots
