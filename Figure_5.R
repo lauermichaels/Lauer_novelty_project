@@ -5,6 +5,7 @@ library(tidyverse) # data manipulation and ggplots
 library(splines) # splines
 library(scales) # percent axes
 library(nnet)   # for multinomial models
+library(patchwork) # multi-panel figures
 
 setwd("~")
 
