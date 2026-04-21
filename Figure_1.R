@@ -9,11 +9,11 @@ setwd("~")
 
 df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2001_2022_3_1_26.parquet")
 
-# Our working data frame will be a 5% random sample
+# Our working data frame will be a 25% random sample
 
 set.seed(123)
 df <- df_opa_sciscinet_2001_2022 %>%
-  sample_frac(0.05)
+  sample_frac(0.25)
 
 #### Compare by Science Type
 
