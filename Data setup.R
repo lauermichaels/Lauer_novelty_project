@@ -743,7 +743,7 @@ nih_project_pmids <- nih_projects_use %>% left_join(all_pmids) %>% distinct() %>
   select(pmid) %>% distinct() %>%
   mutate(funding_NIH=1)
 
-# Save result in .RData and .parquet formats
+# Save result in .parquet format
 
 write_parquet(nih_project_pmids, "NIH_pmids_6_11_26.parquet")
 
