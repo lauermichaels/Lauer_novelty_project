@@ -275,3 +275,5 @@ COPY (
 TO 'figure_1_ecdf_plot_data.parquet'
 (FORMAT PARQUET)
 ")
+
+dbDisconnect(con, shutdown = TRUE)
