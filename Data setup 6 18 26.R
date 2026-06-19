@@ -1,6 +1,6 @@
 # Data setup
 
-setwd("~/Library/CloudStorage/OneDrive-Personal/Novelty Paper")
+setwd("~")
 
 library(arrow) # Efficiently read and process parquet and other large files
 library(tidyverse) # Data manipulation and ggplots
@@ -13,7 +13,6 @@ library(janitor) # clean names
 
 ########################################################################################
 
-setwd("~/Dropbox/My Mac (new-host.home)/Downloads")
 
 # Data from the NIH Office of Portfolio Analysis, downloaded on 6/11/26,
 # Snapshot 2026-04 at https://nih.figshare.com/articles/dataset/iCite_Database_Snapshot_2026-04/32209434?backTo=/collections/iCite_Database_Snapshots_NIH_Open_Citation_Collection_/4586573
