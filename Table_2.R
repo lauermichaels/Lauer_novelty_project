@@ -378,12 +378,34 @@ table2_body_wide <- table2_body_long %>%
 
 table2_body_wide
 
+# Compute total N by year group for column headers
+
+year_group_n <- dbGetQuery(con, "
+    SELECT
+        year_group,
+        COUNT(*) AS n_total
+    FROM table2_base
+    WHERE year_group IS NOT NULL
+      AND year_group != 'Other'
+    GROUP BY year_group
+")
+
+year_group_n_lookup <- year_group_n %>%
+  mutate(n_total = scales::comma(n_total, accuracy = 1)) %>%
+  deframe()
+
+n_2001_2004 <- year_group_n_lookup[["2001-2004"]]
+n_2005_2009 <- year_group_n_lookup[["2005-2009"]]
+n_2010_2014 <- year_group_n_lookup[["2010-2014"]]
+n_2015_2019 <- year_group_n_lookup[["2015-2019"]]
+n_2020_2022 <- year_group_n_lookup[["2020-2022"]]
+
 # Create and save Table 2
 
 tbl_gt_Table_2 <- table2_body_wide %>%
   gt() %>%
   tab_header(
-    title = md("**Table 2: Characteristics of Papers According to Year**")
+    title = md("")
   ) %>%
   tab_spanner(
     label = md("**Publication Year**"),
@@ -397,11 +419,11 @@ tbl_gt_Table_2 <- table2_body_wide %>%
   ) %>%
   cols_label(
     Variable = md("**Variable**"),
-    `2001-2004` = md("**2001-2004**"),
-    `2005-2009` = md("**2005-2009**"),
-    `2010-2014` = md("**2010-2014**"),
-    `2015-2019` = md("**2015-2019**"),
-    `2020-2022` = md("**2020-2022**")
+    `2001-2004` = md(paste0("**2001-2004**<br>N = ", n_2001_2004)),
+    `2005-2009` = md(paste0("**2005-2009**<br>N = ", n_2005_2009)),
+    `2010-2014` = md(paste0("**2010-2014**<br>N = ", n_2010_2014)),
+    `2015-2019` = md(paste0("**2015-2019**<br>N = ", n_2015_2019)),
+    `2020-2022` = md(paste0("**2020-2022**<br>N = ", n_2020_2022))
   ) %>%
   tab_footnote(
     footnote = "Mean (SD); n (%)",
@@ -414,6 +436,20 @@ tbl_gt_Table_2 <- table2_body_wide %>%
         `2020-2022`
       )
     )
+  ) %>%
+  cols_align(
+    align = "center",
+    columns = c(
+      `2001-2004`,
+      `2005-2009`,
+      `2010-2014`,
+      `2015-2019`,
+      `2020-2022`
+    )
+  ) %>%
+  cols_align(
+    align = "left",
+    columns = Variable
   ) %>%
   tab_options(
     table.font.names = "Times New Roman",

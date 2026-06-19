@@ -326,12 +326,33 @@ table_body_wide <- table_body_long %>%
 
 table_body_wide
 
+# Compute total N by funding group for column headers
+
+funding_n <- dbGetQuery(con, sprintf("
+    SELECT
+        Funding,
+        COUNT(*) AS n_total
+    FROM read_parquet('%s')
+    WHERE Funding IS NOT NULL
+    GROUP BY Funding
+", input_file))
+
+not_nih_n <- funding_n %>%
+  filter(Funding == "Not NIH") %>%
+  pull(n_total) %>%
+  scales::comma(accuracy = 1)
+
+nih_n <- funding_n %>%
+  filter(Funding == "NIH") %>%
+  pull(n_total) %>%
+  scales::comma(accuracy = 1)
+
 # Create and save table
 
 tbl_gt_Table_1 <- table_body_wide %>%
   gt() %>%
   tab_header(
-    title = md("**Table 1: Characteristics of Papers According to Funding**")
+    title = md("")
   ) %>%
   tab_spanner(
     label = md("**Funding**"),
@@ -339,12 +360,20 @@ tbl_gt_Table_1 <- table_body_wide %>%
   ) %>%
   cols_label(
     Variable = md("**Variable**"),
-    `Not NIH` = md("**Not NIH**"),
-    NIH = md("**NIH**")
+    `Not NIH` = md(paste0("**Not NIH**<br>N = ", not_nih_n)),
+    NIH = md(paste0("**NIH**<br>N = ", nih_n))
   ) %>%
   tab_footnote(
     footnote = "Mean (SD); n (%)",
     locations = cells_column_labels(columns = c(`Not NIH`, NIH))
+  ) %>%
+  cols_align(
+    align = "center",
+    columns = c(`Not NIH`, NIH)
+  ) %>%
+  cols_align(
+    align = "left",
+    columns = Variable
   ) %>%
   tab_options(
     table.font.names = "Times New Roman"
@@ -356,5 +385,4 @@ gtsave(
   tbl_gt_Table_1,
   "Table 1.html"
 )
-
 dbDisconnect(con, shutdown = TRUE)

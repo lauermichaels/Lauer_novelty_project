@@ -38,6 +38,26 @@ FROM read_parquet('%s')
 WHERE Atyp_10pct_Z IS NOT NULL
 ", input_file))
 
+# Compute total N by funding group for column headers
+# This N is based on the Supplemental Table 1 analytic sample:
+# papers with nonmissing Atyp_10pct_Z and nonmissing Funding
+
+funding_n_supp1 <- dbGetQuery(con, "
+    SELECT
+        Funding,
+        COUNT(*) AS n_total
+    FROM supp_table1_base
+    WHERE Funding IS NOT NULL
+    GROUP BY Funding
+")
+
+funding_n_supp1_lookup <- funding_n_supp1 %>%
+  mutate(n_total = scales::comma(n_total, accuracy = 1)) %>%
+  deframe()
+
+not_nih_n_supp1 <- funding_n_supp1_lookup[["Not NIH"]]
+nih_n_supp1 <- funding_n_supp1_lookup[["NIH"]]
+
 # Continuous summaries in duckDB
 
 continuous_summary_supp1 <- dbGetQuery(con, "
@@ -353,7 +373,7 @@ supp_table1_body_wide
 tbl_gt_supp_Table_1 <- supp_table1_body_wide %>%
   gt() %>%
   tab_header(
-    title = md("**Supplemental Table 1: Characteristics of Papers According to Funding Among Papers with Nonmissing Atypical-Pair Measures**")
+    title = md("")
   ) %>%
   tab_spanner(
     label = md("**Funding**"),
@@ -361,12 +381,20 @@ tbl_gt_supp_Table_1 <- supp_table1_body_wide %>%
   ) %>%
   cols_label(
     Variable = md("**Variable**"),
-    `Not NIH` = md("**Not NIH**"),
-    NIH = md("**NIH**")
+    `Not NIH` = md(paste0("**Not NIH**<br>N = ", not_nih_n_supp1)),
+    NIH = md(paste0("**NIH**<br>N = ", nih_n_supp1))
   ) %>%
   tab_footnote(
     footnote = "Mean (SD); n (%)",
     locations = cells_column_labels(columns = c(`Not NIH`, NIH))
+  ) %>%
+  cols_align(
+    align = "center",
+    columns = c(`Not NIH`, NIH)
+  ) %>%
+  cols_align(
+    align = "left",
+    columns = Variable
   ) %>%
   tab_options(
     table.font.names = "Times New Roman"
