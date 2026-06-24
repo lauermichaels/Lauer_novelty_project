@@ -17,8 +17,6 @@ df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2001_2022_6_18_26.p
 # to those with project numbers indicating NIGMS R35
 # Publink files are at https://reporter.nih.gov/exporter. 
 
-setwd("~/Dropbox/Book 2025/Publication link files")
-
 R35_RePORTER_PUBLNK_C_FY2025 <- read_csv("RePORTER_PUBLNK_C_FY2025.csv") %>% clean_names %>%
   select(project_number, pmid) %>% distinct() %>%
   filter(substr(project_number,1,3)=="R35") %>%
@@ -204,8 +202,6 @@ tbl_by_funding <-
 R35_tbl_gt_Table_1 <- as_gt(tbl_by_funding) %>%
   gt::tab_options(table.font.names = "Times New Roman")
 R35_tbl_gt_Table_1
-
-setwd("~/Library/CloudStorage/OneDrive-Personal/Novelty Paper")
 
 # Save table
 gtsave(R35_tbl_gt_Table_1, "Supplemental Table 6.html")
