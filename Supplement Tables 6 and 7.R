@@ -15,6 +15,7 @@ df_opa_sciscinet_2001_2022 <- read_parquet("df_opa_sciscinet_2001_2022_6_18_26.p
 
 # Identify NIGMS R35 papers -- read Publink files for papers published after 2017 and limit
 # to those with project numbers indicating NIGMS R35
+# Publink files are at https://reporter.nih.gov/exporter. 
 
 setwd("~/Dropbox/Book 2025/Publication link files")
 
