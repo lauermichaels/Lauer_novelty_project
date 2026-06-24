@@ -241,4 +241,3 @@ arrow::write_parquet(
 )
 
 dbDisconnect(con, shutdown = TRUE)
-

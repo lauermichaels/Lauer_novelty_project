@@ -205,18 +205,47 @@ pred_grid <- expand.grid(
 
 # Generate predicted probabilities
 
+# Generate predicted probabilities with HC1 robust standard errors
+
 pred_link <- predict(
   fit_logit_weights_full_darwin,
   newdata = pred_grid,
   type = "link",
-  se.fit = TRUE
+  se.fit = FALSE
 )
 
-pred_grid$linpred <- pred_link$fit
-pred_grid$se_link <- pred_link$se.fit
+# HC1 robust covariance matrix of coefficients
+V_HC1 <- vcovHC(
+  fit_logit_weights_full_darwin,
+  type = "HC1"
+)
+
+# Build model matrix for the prediction grid
+Terms <- delete.response(terms(fit_logit_weights_full_darwin))
+
+mf_new <- model.frame(
+  Terms,
+  data = pred_grid,
+  na.action = na.pass,
+  xlev = fit_logit_weights_full_darwin$xlevels
+)
+
+X_new <- model.matrix(
+  Terms,
+  data = mf_new,
+  contrasts.arg = fit_logit_weights_full_darwin$contrasts
+)
+
+# Robust SE of the linear predictor: sqrt(diag(X V X'))
+se_link_HC1 <- sqrt(diag(X_new %*% V_HC1 %*% t(X_new)))
+
+# Store results
+pred_grid$linpred <- as.numeric(pred_link)
+pred_grid$se_link_HC1 <- se_link_HC1
+
 pred_grid$prob <- plogis(pred_grid$linpred)
-pred_grid$prob_low <- plogis(pred_grid$linpred - 1.96 * pred_grid$se_link)
-pred_grid$prob_high <- plogis(pred_grid$linpred + 1.96 * pred_grid$se_link)
+pred_grid$prob_low <- plogis(pred_grid$linpred - 1.96 * pred_grid$se_link_HC1)
+pred_grid$prob_high <- plogis(pred_grid$linpred + 1.96 * pred_grid$se_link_HC1)
 
 pred_grid <- pred_grid %>%
   mutate(
@@ -277,6 +306,10 @@ ggsave(
   units = "in",
   dpi = 600
 )
+
+# Validate use of Sandwich robust SEs
+
+all(colnames(X_new) == colnames(V_HC1)) # Came back as TRUE
 
 dbDisconnect(con, shutdown = TRUE)
 
